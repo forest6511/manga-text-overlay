@@ -1,0 +1,29 @@
+{
+  "name": "manga-text-overlay",
+  "version": "1.0.0",
+  "description": "Gemini AI画像生成における日本語テキスト文字化け問題を解決するNode.jsツール",
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate_manga.mjs",
+    "generate:long": "node scripts/generate_long_manga.mjs",
+    "example:bridge": "node scripts/generate_manga.mjs 吊り橋効果",
+    "example:mirror": "node scripts/generate_long_manga.mjs ミラーリング"
+  },
+  "keywords": [
+    "gemini",
+    "manga",
+    "japanese",
+    "text-overlay",
+    "ai-image-generation",
+    "nano-banana"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^1.40.0",
+    "canvas": "^2.11.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

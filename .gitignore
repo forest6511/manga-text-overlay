@@ -1,0 +1,5 @@
+node_modules/
+generated_imgs/*.png
+!generated_imgs/.gitkeep
+.env
+.DS_Store
