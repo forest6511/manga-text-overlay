@@ -8,6 +8,7 @@ import { GoogleGenAI } from "@google/genai";
 import { createCanvas, loadImage } from "canvas";
 import fs from "fs";
 import path from "path";
+import { checkUsage, recordUsage } from "./usage_guard.mjs";
 
 const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
@@ -105,7 +106,7 @@ VERY IMPORTANT:
 - Clean backgrounds without any text or bubbles`;
 
   const response = await genAI.models.generateContent({
-    model: "gemini-2.5-flash-image",
+    model: "gemini-3-pro-image-preview",
     contents: prompt,
   });
 
@@ -247,6 +248,7 @@ async function main() {
   console.log(`📝 コマ数: ${config.panels.length}`);
   console.log(`🎭 利用可能テーマ: ${Object.keys(themeConfigs).join(", ")}`);
 
+  checkUsage();
   const genAI = new GoogleGenAI({ apiKey });
 
   // Step 1: 吹き出し空白の画像を生成
@@ -260,6 +262,7 @@ async function main() {
   const baseImagePath = path.join(dir, `manga_base_${timestamp}.png`);
   fs.writeFileSync(baseImagePath, baseImageBuffer);
   console.log(`💾 ベース画像: ${baseImagePath}`);
+  recordUsage();
 
   // Step 2: 日本語テキストをオーバーレイ
   const finalImageBuffer = await overlayJapaneseText(baseImageBuffer, config);

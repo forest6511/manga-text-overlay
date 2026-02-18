@@ -3,3 +3,4 @@ generated_imgs/*.png
 !generated_imgs/.gitkeep
 .env
 .DS_Store
+.usage_count.json

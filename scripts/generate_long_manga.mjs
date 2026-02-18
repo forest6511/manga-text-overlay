@@ -7,6 +7,7 @@ import { GoogleGenAI } from "@google/genai";
 import { createCanvas, loadImage } from "canvas";
 import fs from "fs";
 import path from "path";
+import { checkUsage, recordUsage } from "./usage_guard.mjs";
 
 const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
@@ -212,6 +213,7 @@ async function main() {
   console.log(`📖 テーマ: ${themeName}`);
   console.log(`📝 コマ数: ${config.panels}`);
 
+  checkUsage();
   const genAI = new GoogleGenAI({ apiKey });
 
   const baseBuffer = await generateBaseImage(genAI, themeName, config);
@@ -222,6 +224,7 @@ async function main() {
 
   fs.writeFileSync(path.join(dir, `long_base_${timestamp}.png`), baseBuffer);
   console.log(`💾 ベース画像保存`);
+  recordUsage();
 
   const finalBuffer = await addDialogues(baseBuffer, config.dialogues);
   const finalPath = path.join(dir, `long_final_${timestamp}.png`);

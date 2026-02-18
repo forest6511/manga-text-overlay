@@ -6,6 +6,7 @@
 import { GoogleGenAI } from "@google/genai";
 import fs from "fs";
 import path from "path";
+import { checkUsage, recordUsage } from "./usage_guard.mjs";
 
 const apiKey = process.env.GEMINI_API_KEY;
 if (!apiKey) {
@@ -16,13 +17,14 @@ if (!apiKey) {
 const prompt = process.argv[2] || "A romantic book cover with warm colors";
 
 async function main() {
+  checkUsage();
   const genAI = new GoogleGenAI({ apiKey });
 
   console.log(`プロンプト: ${prompt}`);
   console.log("生成中...");
 
   const response = await genAI.models.generateContent({
-    model: "gemini-2.5-flash-image",
+    model: "gemini-3-pro-image-preview",
     contents: prompt,
   });
 
@@ -38,6 +40,7 @@ async function main() {
         const filePath = path.join(dir, `image_${timestamp}.png`);
         fs.writeFileSync(filePath, Buffer.from(part.inlineData.data, 'base64'));
         console.log("保存:", filePath);
+        recordUsage();
       }
     }
   }
